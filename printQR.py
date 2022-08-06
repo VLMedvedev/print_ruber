@@ -1,9 +1,4 @@
-#!/usr/bin/env python3
-#import qrcode
-#import os
-#import numpy
-#import cv2
-#from PIL import Image
+
 import time
 import socket
 import argparse
@@ -11,9 +6,6 @@ import dbSqliteAlpameter as db
 import os
 #import sys
 
-
-#import asyncio
-#from pyipp import IPP
 
 def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
 
@@ -189,7 +181,8 @@ def exists(path):
 
 def print_direct(str_print):
     for port in range(2):
-        filename = '/dev/usb/lp'+str(port)
+       # filename = '/dev/usb/lp'+str(port)
+        filename = 'USB00' + str(port)
         #print(filename)
         if exists(filename):
             #print(port)
@@ -298,4 +291,4 @@ if __name__ == '__main__':
                 #print_to_net_printer(strLabel)
 
 
-
+#    vEvze8-dutkyw-jydnam
