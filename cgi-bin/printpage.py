@@ -132,6 +132,9 @@ def printpages():
             </td>
         </tr>   
         <tr>
+            <td>
+                    <h1   style="text-align:center; color:white; font-size: 4.4rem; ">{label}</h1>
+            </td > 
             <td >
                 <label   style="text-align:center; color:white; font-size: 2.4rem; "> Serial print custom label </label>
             </td >       
