@@ -306,6 +306,7 @@ if form.getvalue('command'):
         db.set_taped_diam(in_diam, out_diam)
         db.set_refrash(15)
         command_scripts.print_serial(quantity)
+        sys.stderr.write("print = " + str(quantity))
         print(printpage.printpages())
     elif button == 'no_print':
         not_pr = db.get_not_print()
