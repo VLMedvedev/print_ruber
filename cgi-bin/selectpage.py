@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-#sys.path.insert(0, "/opt/ametr")
+sys.path.insert(0, "/opt/print_ruber")
 import base64
 from datetime import datetime
 import dbSqliteAlpameter as db
