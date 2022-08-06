@@ -270,7 +270,7 @@ if __name__ == '__main__':
     clone = args.clone
 
     not_print = db.get_not_print()
-    #not_print = 0
+    not_print = 0
     if clone == 0:
         pr = db.create_new_print(name, float(iner_diam), float(out_diam), epoch32)
         strLabel = get_print_string(pr, landscape)
