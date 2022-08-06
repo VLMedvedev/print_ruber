@@ -271,6 +271,8 @@ if __name__ == '__main__':
 
     not_print = db.get_not_print()
     not_print = 0
+
+
     if clone == 0:
         pr = db.create_new_print(name, float(iner_diam), float(out_diam), epoch32)
         strLabel = get_print_string(pr, landscape)
@@ -284,7 +286,7 @@ if __name__ == '__main__':
     else:
         strLabel = get_clone_print_string(name, iner_diam, out_diam, landscape, epoch32)
         #print(strLabel)
-        #sys.stderr.write("strLabel = " + str(strLabel))
+        sys.stderr.write("strLabel = " + str(strLabel))
         if not_print == 0:
             for i in range(quantity):
                 print_direct(strLabel)
