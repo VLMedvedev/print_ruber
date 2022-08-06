@@ -1,0 +1,16 @@
+opencv-python
+peewee
+sensecam-control  
+imutils
+argparse
+pyzbar
+screeninfo
+qrcode
+pillow
+numpy
+schedule
+pyserial
+brom
+openpyxl
+
+
