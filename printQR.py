@@ -181,8 +181,8 @@ def exists(path):
 
 def print_direct(str_print):
     for port in range(2):
-       # filename = '/dev/usb/lp'+str(port)
-        filename = 'USB00' + str(port)
+        filename = '/dev/usb/lp'+str(port)
+       # filename = 'USB00' + str(port)
         #print(filename)
         if exists(filename):
             #print(port)
