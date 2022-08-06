@@ -9,7 +9,7 @@ import os
 
 def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
 
-    str_print ='^XA ^POI ^PW250 ^CI0 ~SD25 ~TA020'
+    str_print ='^XA ^POI ^PW250 ^CI0 ~SD25 ~TA010'
     str_print += '^LH5,5 ^FT120,400 ^BQR,2,3 ^FH ^FDQA,'
     str_print += name_mat
     str_print += '_0D_0A'
@@ -55,7 +55,7 @@ def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formul
 
 def print_qr_zpl(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
 
-    str_print ='^XA ^PON ^PW410 ^CI0 ~SD25 ~TA030'
+    str_print ='^XA ^PON ^PW410 ^CI0 ~SD25 ~TA010'
     str_print += '^LH5,5 ^FT270,120 ^BQN,2,3 ^FH_ ^FDQA,'
     str_print += name_mat
     str_print += '_0D_0A'
