@@ -6,6 +6,7 @@ from datetime import datetime
 import dbSqliteAlpameter as db
 import cgi
 import command_scripts
+import printpage
 
 def printpages():
     #refrash_page = '< meta http - equiv = "refresh" content = "3" / >
@@ -188,9 +189,6 @@ def printpages():
       <form class="" action="/cgi-bin/selectpage.py" method="post">
         <table width="100%" cellspacing="0" cellpadding="4" border="0" align="center" >
         <tr>
-              <td width="10%" align="center">
-                    <button class="button-basic button-green" type="submit" name="command" value="return" >To Scan</button >
-              </td>
               <td>
                     <h1   style="text-align:center; color:white; font-size: 4.4rem; ">{label}</h1>
               </td >
@@ -262,59 +260,15 @@ def printpages():
           </table>
 """)
 
-    last_printed = db.get_last_printed()
-    in_diam = int(last_printed.id_nom)
-    out_diam = int(last_printed.od_nom)
-    len = last_printed.len
-    quantity = 1
-
     strr = strr + (f"""
-    <table width="100%" cellspacing="20" cellpadding="16" border="0" align="center" >
-        <tr>
-            <td >
-                <label   style="text-align:center; color:white; font-size: 2.4rem; "> Serial print custom label </label>
-            </td >       
-        </tr>     
-     </table>
-     <table width="100%" cellspacing="0" cellpadding="16" border="0" align="center" >
-        
-        <tr>
-            <td width="18%" align="right">
-               <label   class="text-label "> Inner:</label>
-            </td >
-              <td width="15%" >
-                  <input  style= "font-size: 2.4rem; "  name="in_diam" required type="number" value={in_diam}>
-              </td >
-              <td width="18%" align="right" >
-                    <label   class="text-label "> Outer:</label>
-              </td >
-              <td width="15%" >
-                  <input   style= "font-size: 2.4rem; " name="out_diam" required type="number" value={out_diam}>
-              </td >  
-              <td width="18%" align="right" >
-                    <label   class="text-label "> Len:</label>
-              </td >
-              <td width="16%" >
-                  <input   style= "font-size: 2.4rem; " name="len" required type="number" value={len}>
-              </td >       
-        </tr>  
-        <tr>
-              <td colspan = "3" align="right" >
-                    <label   style="text-align:right; color:white; font-size: 2.4rem; ">  Quantity : </label>
-              </td >
-              <td >
-                  <input  style="font-size: 2.4rem; " name="quantity" required type="number" value={quantity}>
-              </td >    
-        </tr>  
+     <table width="100%" cellspacing="0" cellpadding="16" border="0" align="center" >      
         <tr>      
              <td colspan = "6" align="center">
-                  <button class="button-basic button-50 button-green" type="submit" name="command" value="print_serial">Print</button>
+                  <button class="button-basic button-50 button-green" type="submit" name="command" value="print_page">To Print</button>
              </td>              
         </tr>
- 
-        </table>
-    
-    
+    </table>
+      
 """)
     strr = strr + ("""
       </form>
@@ -331,22 +285,20 @@ form = cgi.FieldStorage()
 # Get data from fields
 if form.getvalue('command'):
     button = form.getvalue('command')
-    if button == 'print':
-        db.set_started(1)
+    if button == 'start':
+        db.set_refrash(150)
+        print(printpages())
+    elif button == 'print_page':
         db.set_refrash(1)
-
+        print(printpage.printpages())
     elif button == 'reprint':
         db.set_refrash(1)
         command_scripts.reprint()
-
     elif button == 'save':
         command_scripts.save_to_1c()
-
     elif button == 'return':
-        formula = form.getvalue('formula')
-        db.set_taped_formula(formula)
-        db.set_refrash(1)
-        #print(selectpagepage.printpages())
+        db.set_refrash(150)
+        print(printpages())
     elif button == 'print_serial':
         in_diam = form.getvalue('in_diam')
         out_diam = form.getvalue('out_diam')
@@ -354,7 +306,7 @@ if form.getvalue('command'):
         db.set_taped_diam(in_diam, out_diam)
         db.set_refrash(15)
         command_scripts.print_serial(quantity)
-        print(printpages())
+        print(printpage.printpages())
     elif button == 'no_print':
         not_pr = db.get_not_print()
         if not_pr == 0:
@@ -375,13 +327,13 @@ if form.getvalue('command'):
 if form.getvalue('name'):
     name = form.getvalue('name')
     db.set_taped_name(name)
-    db.set_refrash(15)
+    db.set_refrash(150)
     print(printpages())
 
 if form.getvalue('material'):
     material = form.getvalue('material')
     db.set_taped_material(material)
-    db.set_refrash(15)
+    db.set_refrash(150)
     print(printpages())
 
 # Get data from fields
@@ -390,5 +342,6 @@ if form.getvalue('formula'):
     db.set_taped_formula(formula)
 
 if __name__ == "__main__":
+    pass
     #print("jhhjh")
-    print(printpages())
+    #print(printpages())
