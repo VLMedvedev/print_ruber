@@ -10,7 +10,7 @@ import os
 def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
 
     str_print ='^XA ^POI ^PW250 ^CI0 ~SD25 ~TA000'
-    str_print += '^LH5,45 ^FT120,400 ^BQR,2,3 ^FH ^FDQA,'
+    str_print += '^LH5,15 ^FT120,400 ^BQR,2,3 ^FH ^FDQA,'
     str_print += name_mat
     str_print += '_0D_0A'
     str_print += diam
@@ -28,7 +28,7 @@ def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formul
     str_print +=  '^FS'
 
     str_print += '^FO180,45 ^FB350,1,0,J,0 ^A0R,50,32^FD'
-    str_print += name_mat[0:14]
+    str_print += name_mat[0:16]
     str_print += '^FS'
 
     str_print += '^FO120,45 ^FB350,1,0,J,0 ^A0R,55,43^FD'
@@ -56,7 +56,7 @@ def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formul
 def print_qr_zpl(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
 
     str_print ='^XA ^PON ^PW410 ^CI0 ~SD25 ~TA000'
-    str_print += '^LH5,45 ^FT270,120 ^BQN,2,3 ^FH_ ^FDQA,'
+    str_print += '^LH5,15 ^FT270,120 ^BQN,2,3 ^FH_ ^FDQA,'
     str_print += name_mat
     str_print += '_0D_0A'
     str_print += diam
@@ -74,7 +74,7 @@ def print_qr_zpl(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32
     str_print +=  '^FS'
 
     str_print += '^FO15,5 ^FB250,1,0,J,0 ^A0N,50,32^FD'
-    str_print += name_mat[0:14]
+    str_print += name_mat[0:16]
     str_print += '^FS'
 
     str_print += '^FO15,60 ^FB250,1,0,J,0 ^A0N,50,43^FD'
@@ -128,7 +128,7 @@ def print_max_qr_zpl(name_mat, diam, partnum, proizv, year_mon_day, formula, epo
 
     name_mat = name_mat.replace('Max H-Pur ', '')
     str_print += '^FO15,75 ^FB200,1,0,R,0 ^A0N,40,40^FD'
-    str_print += name_mat[0:14]
+    str_print += name_mat[0:16]
     str_print += '^FS'
 
     str_print += '^FO15,115 ^FB200,1,0,R,0 ^A0N,50,43^FD'
