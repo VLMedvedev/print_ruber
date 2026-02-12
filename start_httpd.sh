@@ -1,6 +1,9 @@
 #!/bin/bash
 
-cd /opt/ametr
+killall python
+killall python3
+
+cd /home/user/print_ruber
 
 ./cgiserver.py &
 

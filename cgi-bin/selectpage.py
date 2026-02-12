@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
+
+import warnings
+warnings.filterwarnings("ignore", "'cgi' is deprecated", DeprecationWarning)
+
 import sys
-#sys.path.insert(0, "/opt/ametr")
+sys.path.insert(0, "/home/user/print_ruber")
 import base64
 from datetime import datetime
 import dbSqliteAlpameter as db

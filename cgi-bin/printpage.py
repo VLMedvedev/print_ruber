@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 import sys
+sys.path.insert(0, "/home/user/print_ruber")
 # sys.path.insert(0, "/opt/ametr")
 import base64
 from datetime import datetime
 import dbSqliteAlpameter as db
-#import cgi
-#import command_scripts
-#import selectpage
 
 
 def printpages():

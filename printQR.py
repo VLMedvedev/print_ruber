@@ -1,9 +1,4 @@
-#!/usr/bin/env python3
-#import qrcode
-#import os
-#import numpy
-#import cv2
-#from PIL import Image
+#!/usr/bin/env   python3
 import time
 import socket
 import argparse
@@ -12,13 +7,10 @@ import os
 #import sys
 
 
-#import asyncio
-#from pyipp import IPP
+def print_qr_zpl_300(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
 
-def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
-
-    str_print ='^XA ^POI ^PW250 ^CI0 ~SD25 ~TA020'
-    str_print += '^LH5,5 ^FT120,400 ^BQR,2,3 ^FH ^FDQA,'
+    str_print ='^XA ^PON ^PW580 ^CI0 ~SD30  ~TA040'
+    str_print += '^LH25,5 ^FT370,240 ^BQN,2,4 ^FH_ ^FDQA,'
     str_print += name_mat
     str_print += '_0D_0A'
     str_print += diam
@@ -35,36 +27,51 @@ def print_qr_zpl_landscape(name_mat, diam, partnum, proizv, year_mon_day, formul
     #str_print += '_0D_0A'
     str_print +=  '^FS'
 
-    str_print += '^FO180,45 ^FB350,1,0,J,0 ^A0R,50,32^FD'
-    str_print += name_mat[0:12]
+    str_print += '^FO15,50 ^FB350,1,0,J,0 ^A0N,70,48^FD'
+    str_print += name_mat[:15]
     str_print += '^FS'
 
-    str_print += '^FO120,45 ^FB350,1,0,J,0 ^A0R,55,43^FD'
+    str_print += '^FO15,130 ^FB350,1,0,J,0 ^A0N,80,60^FD'
     str_print += diam
     str_print += '^FS'
 
-    str_print += '^FO90,45 ^FB235,1,0,L,0 ^A0R,30,30^FD'
-    str_print += partnum
-    str_print += '^FS'
-
-    str_print += '^FO60,280 ^FB160,1,0,L,0 ^A0R,30,28^FD'
-    str_print += year_mon_day
-    str_print += '^FS'
+    #str_print += '^FO15,215 ^FB350,1,0,L,0 ^A0N,35,40^FD'
+    #str_print += partnum
+    #str_print += '^FS'
 
     tap = db.get_taped()
     material = tap.material
+    code_p = ""
+    date_p = ""
+    formula = ""
+    year_mon_day = ""
+
+    #str_print += '^FO370,215 ^FB260,1,0,L,0 ^A0N,35,35^FD'
+    #str_print += year_mon_day
+    #str_print += ' #'
+    #str_print += code_p
+    #str_print += '^FS'
+
+    #str_print += '^FO400,270 ^FB260,1,0,L,0 ^A0N,28,30^FD'
+    #str_print += epoch32[2:10]
+    #str_print += '^FS'
+
+
     if material == 'POLYURETHANES':
-        str_print += '^FO30,300 ^FB60,1,0,L,0 ^A0R,25,24^FD'
+        str_print += '^FO380,280 ^FB150,1,0,L,0 ^A0N,35,34^FD'
         str_print += "#"+str(formula)
         str_print += '^FS'
 
     str_print += '^XZ'
     return  str_print
 
+
+
 def print_qr_zpl(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
 
-    str_print ='^XA ^PON ^PW410 ^CI0 ~SD25 ~TA030'
-    str_print += '^LH5,5 ^FT270,120 ^BQN,2,3 ^FH_ ^FDQA,'
+    str_print ='^XA ^PON ^PW580 ^CI0 ~SD30  ~TA040'
+    str_print += '^LH25,5 ^FT370,240 ^BQN,2,4 ^FH_ ^FDQA,'
+
     str_print += name_mat
     str_print += '_0D_0A'
     str_print += diam
@@ -81,23 +88,36 @@ def print_qr_zpl(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32
     #str_print += '_0D_0A'
     str_print +=  '^FS'
 
-    str_print += '^FO15,5 ^FB250,1,0,J,0 ^A0N,50,32^FD'
-    str_print += name_mat[0:12]
+#    str_print += '^FO15,5 ^FB250,1,0,J,0 ^A0N,50,32^FD'
+#    str_print += name_mat[0:12]
+#    str_print += '^FS'
+
+#    str_print += '^FO15,60 ^FB250,1,0,J,0 ^A0N,50,43^FD'
+#    str_print += diam
+#    str_print += '^FS'
+
+#    str_print += '^FO15,115 ^FB250,1,0,L,0 ^A0N,25,26^FD'
+#    str_print += partnum
+#    str_print += '^FS'
+
+    str_print += '^FO15,50 ^FB350,1,0,J,0 ^A0N,70,48^FD'
+    str_print += name_mat[:15]
     str_print += '^FS'
 
-    str_print += '^FO15,60 ^FB250,1,0,J,0 ^A0N,50,43^FD'
+    str_print += '^FO15,130 ^FB350,1,0,J,0 ^A0N,80,60^FD'
     str_print += diam
     str_print += '^FS'
 
-    str_print += '^FO15,115 ^FB250,1,0,L,0 ^A0N,25,26^FD'
+    str_print += '^FO15,215 ^FB350,1,0,L,0 ^A0N,35,40^FD'
     str_print += partnum
     str_print += '^FS'
 
-    str_print += '^FO270,130 ^FB160,1,0,L,0 ^A0N,25,24^FD'
+    str_print += '^FO360,240 ^FB260,1,0,L,0 ^A0N,35,35^FD'
+#    str_print += '^FO270,130 ^FB160,1,0,L,0 ^A0N,25,24^FD'
     str_print += year_mon_day
     str_print += '^FS'
 
-    str_print += '^FO300,155 ^FB160,1,0,L,0 ^A0N,22,24^FD'
+    str_print += '^FO395,285 ^FB160,1,0,L,0 ^A0N,22,24^FD'
     str_print += str(epoch32)[5:10]
     str_print += '^FS'
 
@@ -190,6 +210,7 @@ def exists(path):
 def print_direct(str_print):
     for port in range(2):
         filename = '/dev/usb/lp'+str(port)
+    #    filename = 'USB00' + str(port)
         #print(filename)
         if exists(filename):
             #print(port)
@@ -203,19 +224,19 @@ def get_print_string(pr, landscape=0):
     name = pr.name_materiar
     label = str(name)
     #max = db.get_taped_max()
-    if label.find('Max') > 0:
-        max = 1
-    else:
-        max = 0
+#    if label.find('Max') > 0:
+#        max = 1
+#    else:
+#        max = 0
 
     proizv = 'ALPANA D.O.O'
     if not (pr is None):
         # print(out_diam_array)
         diam = str(int(pr.id_nom)) + 'x' + str(int(pr.od_nom)) + 'x' + str(pr.len)
-        if max == 0:
-            strprint = print_qr_zpl( label, diam, pr.part_number, proizv, year_mon_day, pr.formula, pr.epoch32 )
-        else:
-            strprint = print_max_qr_zpl(label, diam, pr.part_number, proizv, year_mon_day, pr.formula, pr.epoch32)
+#        if max == 0:
+        strprint = print_qr_zpl( label, diam, pr.part_number, proizv, year_mon_day, pr.formula, pr.epoch32 )
+#        else:
+#            strprint = print_max_qr_zpl(label, diam, pr.part_number, proizv, year_mon_day, pr.formula, pr.epoch32)
 
         return strprint
     return None
@@ -298,4 +319,4 @@ if __name__ == '__main__':
                 #print_to_net_printer(strLabel)
 
 
-
+#    vEvze8-dutkyw-jydnam
