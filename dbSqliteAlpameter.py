@@ -12,7 +12,7 @@ import sys
 import time
 
 # Создаем соединение с нашей базой данных
-conn = SqliteDatabase('/home/user/print_ruber/alpameter.db')
+conn = SqliteDatabase('alpameter.db')
 
 # Создаем курсор - это специальный объект который делает запросы
 # и получает их результаты
