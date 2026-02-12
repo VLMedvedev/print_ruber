@@ -2,6 +2,7 @@
 import sys
 sys.path.insert(0, "/home/user/print_ruber")
 # sys.path.insert(0, "/opt/ametr")
+sys.path.insert(0, "/opt/print_ruber")
 import base64
 from datetime import datetime
 import dbSqliteAlpameter as db
@@ -127,8 +128,13 @@ def printpages():
             <td width="10%" align="center">
                 <button class="button-basic button-red" type="submit" name="command" value="return" >To Select</button >
             </td>
+            <td>
+                    <h1   style="text-align:center; color:white; font-size: 4.4rem; ">{label}</h1>
+            </td > 
         </tr>   
         <tr>
+             <td >
+             </td >  
             <td >
                 <label   style="text-align:center; color:white; font-size: 2.4rem; "> Serial print custom label </label>
             </td >       
