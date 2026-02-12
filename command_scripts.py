@@ -19,11 +19,13 @@ def print_serial(quantity):
     name = tap_last.name
     iner_diam = tap_last.iner_diam
     out_diam  = tap_last.out_diam
+    len  = tap_last.len
     epoch32 = datetime.now().timestamp()
     cmd = 'python3 printQR.py'
     cmd += '  --name="' + str(name) + '"'
     cmd += '  --iner=' + str(iner_diam)
     cmd += '  --outer=' + str(out_diam)
+    cmd += '  --len=' + str(len)
     cmd += '  --epoch32=' + str(epoch32)
     cmd += '  --quantity=' + str(quantity)
     print(cmd)

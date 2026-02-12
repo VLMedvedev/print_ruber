@@ -343,8 +343,9 @@ if form.getvalue('command'):
     elif button == 'print_serial':
         in_diam = form.getvalue('in_diam')
         out_diam = form.getvalue('out_diam')
+        len = form.getvalue('len')
         quantity = form.getvalue('quantity')
-        db.set_taped_diam(in_diam, out_diam)
+        db.set_taped_diam(in_diam, out_diam, len)
         db.set_refrash(15)
         command_scripts.print_serial(quantity)
         print(selectpage.printpages())

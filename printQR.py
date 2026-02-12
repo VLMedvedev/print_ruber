@@ -280,9 +280,12 @@ def test_image_print():
 if __name__ == '__main__':
     #test_image_print()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--name', type=str, help='Name materials', default='Max H-Pur | FDA' )
-    parser.add_argument('--iner', help='Iner diametre', default=122)
-    parser.add_argument('--outer', help='OOuter diam', default=168)
+#    parser.add_argument('--name', type=str, help='Name materials', default='Max H-Pur Turquoise Out.' )
+    parser.add_argument('--name', type=str, help='Name materials', default='Max H-Pur Red FDA' )
+
+    parser.add_argument('--iner', help='Iner diametre', default=635)
+    parser.add_argument('--outer', help='OOuter diam', default=715)
+    parser.add_argument('--len', help='Lem', default=160)
     parser.add_argument('--epoch32', type=str, help='epoch32', default=1234567890)
     parser.add_argument('--quantity', type=int, help='quantity labels', default=1)
     parser.add_argument('--landscape', type=int, help='landscape=1 portrain=0', default=0)
@@ -291,6 +294,7 @@ if __name__ == '__main__':
     name = args.name
     iner_diam = args.iner
     out_diam = args.outer
+    len = args.len
     epoch32 = str(args.epoch32)
     quantity = args.quantity
     landscape = 0 #args.landscape
@@ -300,10 +304,10 @@ if __name__ == '__main__':
     not_print = db.get_not_print()
     #not_print = 0
     if clone == 0:
-        pr = db.create_new_print(name, float(iner_diam), float(out_diam), epoch32)
+        pr = db.create_new_print(name, float(iner_diam), float(out_diam), epoch32, int(len))
         strLabel = get_print_string(pr, landscape)
         #strLabel = '^XA^FO20,20^XGR:max380p.PNG^XZ'
-        #print(strLabel)
+        print(f"strLabel  {strLabel}")
         #sys.stderr.write("strLabel = " + str(strLabel))
         if not_print == 0:
             for i in range(quantity):

@@ -61,8 +61,10 @@ def get_materials_for_id(p_id):
     return m
 
 def get_materials_for_name(p_name):
-    m = Materials.get(Materials.name == p_name)
-    return m
+    try:
+        return Materials.get(Materials.name == p_name)
+    except:
+        return None
 
 def get_materials_for_type_id(p_type):
     #print(p_type)
@@ -96,6 +98,18 @@ def set_current_material_parametr(hMin, sMin, vMin, hMax, sMax, vMax, Mode):
 
     return m
 
+def create_new_material(p_name, p_type, p_colour,
+                 p_minH=0, p_minS=0, p_minV=39,
+                 p_maxH=179, p_maxS=255, p_maxV=255,
+                 p_minH1=0, p_minS1=0, p_minV1=59,
+                 p_maxH1=255, p_maxS1=255, p_maxV1=255,
+                 p_count_min=40, p_count_max=80,
+                 p_count_min_1=90, p_count_max_1=130,
+                 p_dilate=0, p_reverse=1):
+    m = Materials(type_name=p_type, name=p_name, colour=p_colour, minH=p_minH, minS=p_minS, minV=p_minV, maxH=p_maxH, maxS=p_maxS, maxV=p_maxV, minH1=p_minH1, minS1=p_minS1, minV1=p_minV1, maxH1=p_maxH1, maxS1=p_maxS1, maxV1=p_maxV1, count_min=p_count_min, count_max=p_count_max, count_min_1=p_count_min_1, count_max_1=p_count_max_1, dilate=p_dilate, reverse=p_reverse)
+    m.save()
+    return m
+
 def set_min_v_for_material(m, minv):
     m.minV = minv
     m.save()
@@ -120,7 +134,10 @@ class Taped_log(BaseModel):
     log = TextField(column_name='Log')
     iner_diam = IntegerField(column_name='InDiam')
     out_diam = IntegerField(column_name='OutDiam')
+    len = IntegerField(column_name='Len')
     max = IntegerField(column_name='Max')
+    date_p = DateField(null=True)
+    code_p = IntegerField(null=True)
 
     class Meta:
         table_name = 'Taped_log'
@@ -144,10 +161,11 @@ def set_taped_material(p_name):
     return taped
 
 
-def set_taped_diam(iner_diam, out_diam):
+def set_taped_diam(iner_diam, out_diam, len):
     taped = Taped_log.get(Taped_log.id == 1)
     taped.iner_diam = (iner_diam)
     taped.out_diam = (out_diam)
+    taped.len = (len)
     taped.save()
     # save() returns the number of rows modified.
     return taped
@@ -170,6 +188,24 @@ def set_taped_formula(p_p):
     # save() returns the number of rows modified.
     return taped
 
+def set_taped_date_p(p_p):
+    taped = Taped_log.get(Taped_log.id == 1)
+    taped.date_p = p_p
+    epoch32 = datetime.now().timestamp()
+    taped.epoch32 = epoch32
+    taped.save()
+    # save() returns the number of rows modified.
+    return taped
+
+def set_taped_code_p(p_p):
+    taped = Taped_log.get(Taped_log.id == 1)
+    taped.code_p = p_p
+    epoch32 = datetime.now().timestamp()
+    taped.epoch32 = epoch32
+    taped.save()
+    # save() returns the number of rows modified.
+    return taped
+
 def set_last_doc_number(p_p):
     taped = Taped_log.get(Taped_log.id == 1)
     taped.last_doc_number = p_p
@@ -179,6 +215,8 @@ def set_last_doc_number(p_p):
 
 def set_log(p_p):
     taped = Taped_log.get(Taped_log.id == 1)
+    epoch32 = datetime.now().timestamp()
+    taped.epoch32 = epoch32
     taped.log = p_p
     taped.save()
     # save() returns the number of rows modified.
@@ -226,13 +264,13 @@ class Printed_log(BaseModel):
     class Meta:
         table_name = 'Printed_log'
 
-def create_new_print(p_name, p_id, p_od, p_epoch32):
-    p = get_product_for_dia(p_name, p_id, p_od)
+def create_new_print(p_name, p_id, p_od, p_epoch32, p_len=160):
+    p = get_product_for_dia(p_name, p_id, p_od, p_len)
     part_number = 0
     id_nom = 0
     od_nom = 0
     if p is None:
-        #print("Not in price")
+        print("Not in price")
         return None
 
     part_number = p.part_number
@@ -312,10 +350,10 @@ def delete_scanedQR(p_epoch32):
     if out_pr is None:
         return None
 
-    if out_pr.deleted != 1:
-        out_pr.deleted = 1
-    else:
-        out_pr.deleted = 0
+    #if out_pr.deleted != 1:
+    out_pr.deleted = 1
+    #else:
+    #    out_pr.deleted = 0
 
     out_pr.save()
     #print(out_pr)
@@ -341,6 +379,7 @@ def get_last_scanedQR():
     """ Печатаем последние 5 записей в таблице Doors"""
     #print('########################################################')
     cur_query = ScanedQR.select() \
+        .where(ScanedQR.deleted != 1)\
         .limit(1).order_by(ScanedQR.id.desc())
 
     #.where(ScanedQR.doc_number == p_doc_number) \
@@ -403,10 +442,10 @@ def doc_delete_scanedQR(p_epoch32):
         out_pr.scan_epoch32 = 0
         #out_pr.dels = 1
     else:
-        if out_pr.dels != 1:
-            out_pr.dels = 1
-        else:
-            out_pr.dels = 0
+        #if out_pr.dels != 1:
+        out_pr.dels = 1
+        #else:
+       #     out_pr.dels = 0
     out_pr.save()
     #print(out_pr)
     return out_pr
@@ -519,13 +558,13 @@ def create_new_product(p_part_number, p_name, p_id, p_od, p_len, p_weight):
     # save() returns the number of rows modified.
     return pr
 
-def get_product_for_dia(p_name, p_in, p_od):
+def get_product_for_dia(p_name, p_in, p_od, p_len=160):
     tolerance = 0.4
     delta_diam = p_od - p_in
     koeff_tolsh = delta_diam / 20
     proc_in = p_in / 100
     proc_out = p_od / 100
-    tlr_in = tolerance
+    tlr_in = 0.1
     tlr_out = tolerance
 
     #m = Materials.select(Materials.type_name == p_type).limit(9)
@@ -534,14 +573,15 @@ def get_product_for_dia(p_name, p_in, p_od):
               #( Products.od_nom.between(p_od - tlr , p_od + tlr)))
 
     pr_min_dia = None
+    p_name = p_name.strip()
 
-    ids = p_in - tlr_in
-    cur_query = Products.select().where( \
-        (Products.name_material == p_name) & \
-        (Products.id_nom >= ids)). \
-        order_by(Products.id).limit(2)
-
-   # (Products.id_nom >= (p_in + tlr_in))). \
+    ids = p_in
+    print(ids)
+    cur_query = Products.select().where(
+        (Products.name_material == p_name)
+        & (Products.len == p_len)
+        & (Products.id_nom >= ids)
+            ).order_by(Products.id_nom).limit(2)
 
     test_diam_array = []
 
@@ -554,7 +594,7 @@ def get_product_for_dia(p_name, p_in, p_od):
             (Products.name_material == p_name) & \
             (Products.id_nom == min_dia) & \
             (Products.od_nom <= ods)).\
-            order_by(Products.id.desc()).limit(1)
+            order_by(Products.od_nom.desc()).limit(1)
 
         out_pr = None
         for pr in cur_query:
@@ -567,11 +607,11 @@ def get_product_for_dia(p_name, p_in, p_od):
 
 
     if pr_min_dia is None:
-        #print("Not found min dia")
+        print("Not found min dia")
         return None
 
-    if out_pr is None:
-        #print("Not found max dia")
+    if len(test_diam_array) <= 0:
+        print("Not found max dia")
         return None
     PI = 3.14
     out_s = PI * p_od * p_od  / 4
@@ -592,7 +632,7 @@ def get_product_for_dia(p_name, p_in, p_od):
             min_pr = pr
 
     if min_pr is None:
-        #print("Not found max dia")
+        print("Not found max dia")
         return None
 
     return min_pr
@@ -768,8 +808,8 @@ def get_koefficient(p_zoom, p_iner, p_picsel, p_dilate ):
     zoom = int(p_zoom * 100)
     cur_query = Koefficients.select().where( \
         (Koefficients.inerouter >= p_iner) & \
-        (Koefficients.zoom == zoom) & \
-        (Koefficients.dilate == p_dilate) & \
+     #   (Koefficients.zoom == zoom) & \
+     #   (Koefficients.dilate == p_dilate) & \
         (Koefficients.picsels == p_picsel) \
         ).order_by(Koefficients.inerouter).limit(1)
 
