@@ -5,6 +5,8 @@ import argparse
 import dbSqliteAlpameter as db
 import os
 #import sys
+import logging
+logging.basicConfig(level=logging.INFO)
 
 
 def print_qr_zpl_300(name_mat, diam, partnum, proizv, year_mon_day, formula, epoch32):
@@ -298,6 +300,9 @@ if __name__ == '__main__':
     epoch32 = str(args.epoch32)
     quantity = args.quantity
     landscape = 0 #args.landscape
+
+    str_log = f"print label  ID {iner_diam} OD {out_diam} Len {len} qual {quantity}"
+    logging.info(str_log)
     
     clone = args.clone
 

@@ -116,10 +116,15 @@ def printpages():
     <form class="" action="/cgi-bin/selectpage.py" method="post">
 """)
 
-    last_printed = db.get_last_printed()
-    in_diam = int(last_printed.id_nom)
-    out_diam = int(last_printed.od_nom)
-    len = last_printed.len
+    try:
+        last_printed = db.get_last_printed()
+        in_diam = int(last_printed.id_nom)
+        out_diam = int(last_printed.od_nom)
+        len = last_printed.len
+    except:
+        in_diam = 0
+        out_diam = 0
+        len = 0
     quantity = 1
 
     strr = strr + (f"""

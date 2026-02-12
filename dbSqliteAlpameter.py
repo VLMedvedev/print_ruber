@@ -11,6 +11,9 @@ import  printQR
 import sys
 import time
 
+import logging
+logging.basicConfig(level=logging.INFO)
+
 # Создаем соединение с нашей базой данных
 conn = SqliteDatabase('alpameter.db')
 
@@ -327,6 +330,12 @@ def delete_print_log(p_epoch32):
     #print(out_pr)
     return out_pr
 
+def delete_print_log_all():
+    cur_query = Printed_log.delete()
+    cur_query.execute()
+
+    return cur_query
+
 ##### Printed_log - end
 
 ##### ScanedQR - begin
@@ -559,12 +568,14 @@ def create_new_product(p_part_number, p_name, p_id, p_od, p_len, p_weight):
     return pr
 
 def get_product_for_dia(p_name, p_in, p_od, p_len=160):
+    str_log = f"get produkt  ID {iner_diam} OD {out_diam} Len {len} "
+    logging.info(str_log)
     tolerance = 0.4
     delta_diam = p_od - p_in
     koeff_tolsh = delta_diam / 20
     proc_in = p_in / 100
     proc_out = p_od / 100
-    tlr_in = 0.1
+    tlr_in = tolerance
     tlr_out = tolerance
 
     #m = Materials.select(Materials.type_name == p_type).limit(9)
@@ -575,30 +586,31 @@ def get_product_for_dia(p_name, p_in, p_od, p_len=160):
     pr_min_dia = None
     p_name = p_name.strip()
 
-    ids = p_in
-    print(ids)
-    cur_query = Products.select().where(
-        (Products.name_material == p_name)
-        & (Products.len == p_len)
-        & (Products.id_nom >= ids)
-            ).order_by(Products.id_nom).limit(2)
+    ids = p_in - tlr_in
+    cur_query = Products.select().where( \
+        (Products.name_material == p_name) & \
+        (Products.id_nom >= ids)). \
+        order_by(Products.id).limit(2)
+
+   # (Products.id_nom >= (p_in + tlr_in))). \
 
     test_diam_array = []
 
     for pr in cur_query:
-        #print(pr.part_number)
+        print(pr.part_number)
         pr_min_dia = pr
         min_dia = pr_min_dia.id_nom
         ods = p_od + tlr_out
         cur_query = Products.select().where(\
             (Products.name_material == p_name) & \
+            (Products.len == p_len) & \
             (Products.id_nom == min_dia) & \
             (Products.od_nom <= ods)).\
-            order_by(Products.od_nom.desc()).limit(1)
+            order_by(Products.id.desc()).limit(1)
 
         out_pr = None
         for pr in cur_query:
-            # print(pr.part_number)
+            print(pr.part_number)
             out_pr = pr
             test_diam_array.append(out_pr)
 
@@ -610,8 +622,8 @@ def get_product_for_dia(p_name, p_in, p_od, p_len=160):
         print("Not found min dia")
         return None
 
-    if len(test_diam_array) <= 0:
-        print("Not found max dia")
+    if out_pr is None:
+        #print("Not found max dia")
         return None
     PI = 3.14
     out_s = PI * p_od * p_od  / 4
@@ -838,12 +850,18 @@ if __name__ == '__main__':
     epoch32 = '1632136279'
     epoch32 = datetime.now().timestamp()
 
-    name = "H-Pur | FDA"
-    iner_diam = 340
-    out_diam = 426
+    name = "H-NBR"
+    iner_diam = 0
+    out_diam = 20
+    len=600
     epoch32 = 1633420201.52626
 
-    pr = create_new_print(name, iner_diam, out_diam, epoch32)
+    p = get_product_for_dia(name, iner_diam, out_diam, len)
+    print(p.id)
+    print(p.part_number)
+    #pr = create_new_print(name, iner_diam, out_diam, epoch32, len)
+
+    #delete_print_log_all()
 
     #delete_print_log(epoch32)
     #delete_scanedQR(epoch32)
