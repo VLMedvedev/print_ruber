@@ -9,7 +9,7 @@
 """
 Demo CGI Server
 """
-
+import logging
 import dbSqliteAlpameter as db
 
 on = db.get_startedLoadVideo()
@@ -23,6 +23,8 @@ except ImportError:
     import http.server as BaseHTTPServer
     import http.server as CGIHTTPServer
 import cgitb
+
+logging.basicConfig(level=logging.INFO)
 
 cgitb.enable()  # This line enables CGI error reporting
 

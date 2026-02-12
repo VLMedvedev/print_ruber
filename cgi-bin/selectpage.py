@@ -11,6 +11,8 @@ import dbSqliteAlpameter as db
 import cgi
 import command_scripts
 import printpage
+import logging
+logging.basicConfig(level=logging.INFO)
 
 def printpages():
     #refrash_page = '< meta http - equiv = "refresh" content = "3" / >
@@ -308,6 +310,8 @@ if form.getvalue('command'):
         out_diam = form.getvalue('out_diam')
         len = form.getvalue('len')
         quantity = form.getvalue('quantity')
+        str_log = f"print label  ID {in_diam} OD {out_diam} Len {len} qual {quantity}"
+        logging.info(str_log)
         db.set_taped_diam(in_diam, out_diam, len)
         db.set_refrash(15)
         command_scripts.print_serial(quantity)
@@ -345,6 +349,8 @@ if form.getvalue('material'):
 if form.getvalue('formula'):
     formula = form.getvalue('formula')
     db.set_taped_formula(formula)
+
+
 
 if __name__ == "__main__":
     pass
