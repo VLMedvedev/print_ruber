@@ -604,6 +604,7 @@ def get_product_for_dia(p_name, p_in, p_od, p_len=160):
         ods = p_od + tlr_out
         cur_query = Products.select().where(\
             (Products.name_material == p_name) & \
+            (Products.len == p_len) & \
             (Products.id_nom == min_dia) & \
             (Products.od_nom <= ods)).\
             order_by(Products.id.desc()).limit(1)
