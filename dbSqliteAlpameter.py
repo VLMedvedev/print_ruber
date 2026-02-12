@@ -854,10 +854,10 @@ if __name__ == '__main__':
     name = "H-NBR"
     iner_diam = 0
     out_diam = 20
-    len=600
+    p_len=600
     epoch32 = 1633420201.52626
 
-    p = get_product_for_dia(name, iner_diam, out_diam, len)
+    p = get_product_for_dia(name, iner_diam, out_diam, p_len)
     print(p.id)
     print(p.part_number)
     #pr = create_new_print(name, iner_diam, out_diam, epoch32, len)
