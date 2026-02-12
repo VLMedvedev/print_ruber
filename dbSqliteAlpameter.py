@@ -568,7 +568,7 @@ def create_new_product(p_part_number, p_name, p_id, p_od, p_len, p_weight):
     return pr
 
 def get_product_for_dia(p_name, p_in, p_od, p_len=160):
-    str_log = f"get produkt  ID {iner_diam} OD {out_diam} Len {len} "
+    str_log = f"get produkt  ID {p_in} OD {p_od} Len {p_len} "
     logging.info(str_log)
     tolerance = 0.4
     delta_diam = p_od - p_in
